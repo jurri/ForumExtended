@@ -1,6 +1,6 @@
 <?php 
-#   Copyright by: Manuel Staechele
-#   Support: www.ilch.de
+#   Copyright by: FeTTsack
+#   Support: gcc
 
 #   Forenmod by Malte Wiatrowski alias "IRvD"  - Vorlage von Benjamin Rau & matthias-schlich.de
 
@@ -67,6 +67,8 @@ $monatsnamen = array( '','Januar','Februar','März', 'April','Mai','Juni', 'Juli'
 $month_current = $monatsnamen [gmdate('n')];
 
         # define some vars.
+		$row['danke'] = '';
+		$row['THX'] = '';
         $row['sig'] = ( empty($row['sig']) ? '' : '<br /><hr style="width: 80%;" align="left">'.bbcode($row['sig']) );
         $row['TID'] = $tid;
         $row['class'] = $class;
@@ -199,6 +201,27 @@ $month_current = $monatsnamen [gmdate('n')];
           $row['change'] = '&nbsp;<a class="forum" href="index.php?forum-editpost-'.$tid.'-'.$row['id'].'"><img src="include/images/forum/showpost/change.png" width="16" height="16" alt="change" align="absmiddle" title="ändern"/> &auml;ndern</a>';
         }
         $row['posts']  = ($row['posts']?'<br />'.$row['posts']:'').'<br />';
+		
+		// Danke-Link anzeigen oder ausblenden falls user == ersteller oder Gast
+		if ($row['erstid'] == $_SESSION['authid'] or $_SESSION['authid'] == 0) {
+			$row['THX'] = '';
+		} else {
+			# Zufallszahl generieren um Missbrauch vorzubeugen
+			if (!isset($_SESSION['thx_rand']) OR empty($_SESSION['thx_rand'][$row['id']])) {
+			$_SESSION['thx_rand'][$row['id']] = rand(000,999);
+			}
+			$row['THX'] = '<a href="index.php?danke-'.$row['id'].'-'.$_SESSION['thx_rand'][$row['id']].'-'.$tid.'-'.$row['erstid'].'-'.$_SESSION['authid'].'-'.$_SESSION['authname'].'"><img src="http://www.kizuna-la.org/wp-content/uploads/2013/11/Special-Thanks-Donors-Icon.jpg" width="16" height="16" alt="thx" align="absmiddle" title="danke"/> bedanken</a>&nbsp;';
+		}
+		
+		// Ausgeben der Danke-Liste im Post
+		$thxcount = db_fetch_assoc(db_query("SELECT COUNT(id) thxcount FROM `prefix_danke` WHERE pid = ".$row['id'].""));
+		if ($thxcount['thxcount'] >= 1) {
+			$row['danke'] .= '<hr /><strong>F&uuml;r diesen Post bedankten sich '.$thxcount['thxcount'].' User :</strong><br />';
+			$thx_qry = db_query("SELECT bedankername,bedankerid FROM `prefix_danke` WHERE pid = ".$row['id']."");
+			while ($thx_row = db_fetch_assoc($thx_qry)) {
+				$row['danke'] .= '<a href="index.php?user-details-'.$thx_row['bedankerid'].'"><img src="http://www.kizuna-la.org/wp-content/uploads/2013/11/Special-Thanks-Donors-Icon.jpg" width="16" height="16"/>'.$thx_row['bedankername'].'</a> ';
+			}
+		} 
         $tpl->set_ar_out($row,1);
   
   $i++;

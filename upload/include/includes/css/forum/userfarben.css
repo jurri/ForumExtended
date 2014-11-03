@@ -8,81 +8,81 @@
 	text-decoration:none; }
 
 .Recht-9:hover {
-	color:#cccccc;
+	color:#000000;
 	font-weight:bold;
-	text-decoration:none; }
+	text-decoration:underline; }
 
 /*################################################	*/
 /* 			Klasse fuer den CO ADMIN 				*/
 /*################################################	*/
 
 .Recht-8 {
-	color:#FF8800;
+	color:#8A4B08;
 	text-decoration:none; }
 
 .Recht-8:hover {
-	color:#cccccc;
-	text-decoration:none; }
+	color:#000000;
+	text-decoration:underline; }
 
 /*################################################	*/
 /* 			Klasse fuer den SITE ADMIN 				*/
 /*################################################	*/
 
 .Recht-7 {
-	color:#FFFF00;
+	color:#868A08;
 	text-decoration:none; }
 
 .Recht-7:hover {
-	color:#cccccc;
-	text-decoration:none; }
+	color:#000000;
+	text-decoration:underline; }
 
 /*################################################	*/
 /* 			Klasse fuer den LEADER 					*/
 /*################################################	*/
 
 .Recht-6 {
-	color:#80FF00;
+	color:#298A08;
 	text-decoration:none; }
 
 .Recht-6:hover {
-	color:#cccccc;
-	text-decoration:none; }
+	color:#000000;
+	text-decoration:underline; }
 	
 /*################################################	*/
 /* 			Klasse fuer den COLEADER 				*/
 /*################################################	*/
 
 .Recht-5 {
-	color:#00FF80;
+	color:#088A85;
 	text-decoration:none; }
 
 .Recht-5:hover {
-	color:#cccccc;
-	text-decoration:none; }
+	color:#000000;
+	text-decoration:underline; }
 
 /*################################################	*/
 /* 			Klasse fuer den MEMBER	 				*/
 /*################################################	*/
 
 .Recht-4 {
-	color:#00BFFF;
+	color:#086A87;
 	text-decoration:none; }
 
 .Recht-4:hover {
-	color:#cccccc;
-	text-decoration:none; }
+	color:#000000;
+	text-decoration:underline; }
 
 /*################################################	*/
 /* 			Klasse fuer den TRAIL MEMBER			*/
 /*################################################	*/
 
 .Recht-3 {
-	color:#0040FF;
+	color:#0B0B61;
 	text-decoration:none; }
 
 .Recht-3:hover {
-	color:#cccccc;
-	text-decoration:none; }
+	color:#000000;
+	text-decoration:underline; }
 	
 /*################################################	*/
 /* 			Klasse fuer den SUPERUSER 				*/
@@ -93,20 +93,20 @@
 	text-decoration:none; }
 
 .Recht-2:hover {
-	color:#cccccc;
-	text-decoration:none; }
+	color:#000000;
+	text-decoration:underline; }
 
 /*################################################	*/
 /* 			Klasse fuer den USER	 				*/
 /*################################################	*/
 
 .Recht-1 {
-	color:#f2f2f2;
+	color:#585858;
 	text-decoration:none; }
 
 .Recht-1:hover {
-	color:#cccccc;
-	text-decoration:none; }
+	color:#000000;
+	text-decoration:underline; }
 
 
 
