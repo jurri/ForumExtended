@@ -1,6 +1,6 @@
 
 
-Ilchbb Forenmod 1.2 für das IlchClan CMS:
+Ilchbb Forenmod 1.5 beta für das IlchClan CMS:
 """""""""""""""""""""""""""""
 
 Beschreibung:
@@ -10,14 +10,19 @@ wie ein normales BB-Forum aussehen.
 - Es gibt Buttons für PM, Email und Webpage.
 - Eine Distanzierung unter jeden Beitrag.
 - Usergruppen können Farblich angepasst werden.
+- Bedanken für eine Post möglich
+- Bugfix bei der Moderation der Foren
+- Foren werden der Übersichtlichkeit zusammengeklapt.
+
 
 
 Entwickelt
 ----------
+° Weiterentwicklung durch FeTTsack
+	--> http://fettsack.de.vc
+
 ° von IRVD alias Malte Wiatrowski
-»» "http://www.facebook.com/cux.irvd"
-
-
+	»» "http://www.facebook.com/cux.irvd"
 ° Grundgerüst von Locutus aka Matthias Schlich und HeX
 ° Nutzt Teile von :
 -- Benjamin Rau's "Forum mit Zusatzfunktionen (0.1)" 
@@ -40,6 +45,8 @@ Installation:
 -------------
 ° Backup machen
 ° alle Dateien im Ordner upload, in ihrer Ordnerstrucktur hochladen
+° Installation als Admin ausführen
+	bsp: http://www.meine-hp.de/index.php?installation
 
 
 
