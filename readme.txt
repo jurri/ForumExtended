@@ -47,6 +47,8 @@ Installation:
 ° alle Dateien im Ordner upload, in ihrer Ordnerstrucktur hochladen
 ° Installation als Admin ausführen
 	bsp: http://www.meine-hp.de/index.php?installation
+° Ihr müsst noch in eurer design.htm die aktuelle jquery im header einbinden:
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
 
 
