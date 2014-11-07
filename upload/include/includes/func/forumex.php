@@ -3,6 +3,49 @@
 
 defined ('main') or die ( 'no direct access' );
 
+//Optionen
+//An -> true | Aus -> false
+$showResultBeforeVote = false; //Ergebnis schon bevor man selbst gevotet hat anschauen
+$saveAndShowVotersOpinion = false; //Speichere wer was gewählt hat und zeige es später an
+
+//Überprüft ob in einem Text eine Umfrage vorkommt, wenn nicht wird false zurückgegeben,
+//wenn ja wird ein Array in Form array(
+//'question' => 'Frage', 'options' => array('1' => 'Antwort1', '2' => 'Antwort2', ...));
+//zurückgegeben
+//Wenn der 2. Parameter $remove true ist, wird der Umfragetext ausgeschnitten und im Output ein Eintrag 'offset' gemacht,
+//in dem die Position im Text gespeichert wird, wo der Umfragetext war
+function FE_ParseVote(&$text, $remove = false){
+    $vote_start = strpos($text, '[vote]');
+    $vote_end = strpos($text, '[/vote]');
+
+    if ($vote_start === false OR $vote_end === false OR $vote_start > $vote_end) {
+        return false;
+    }
+
+    $vote_txt = substr($text, $vote_start + 6, $vote_end - 6);
+
+    if (preg_match('%\[question](.*)\[/question]%i', $vote_txt, $patterns) == 1) {
+        $output = array('question' => $patterns[1], 'options' => array());
+
+        if (preg_match_all('%\[option=(\d+)](.*)%', $vote_txt, $patterns) > 1) {
+            foreach ($patterns[1] as $key => $value){
+                $output['options'][$value] = $patterns[2][$key];
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+
+    if ($remove !== false) {
+        $text = substr($text, 0, $vote_start) . substr($text, $vote_end + 7);
+        $output['offset'] = $vote_start;
+    }
+
+    return $output;
+}
+
 # Wandelt den Votecode aus dem Forum in HTML um
 function FE_Vote2HTML () //FE_Vote2HTML(int Postid, string Posttext,[int View])   View: 0 = Normal; 1 = Preview; 2 = Ergebnis
 {
@@ -204,5 +247,32 @@ function FE_CreateVote($post_id,$txt){
   }
 }
 
+// Prüft ob der User schon abgestimmt hat
+function FE_has_voted($voter, $voters)
+{
+    if ($GLOBALS['saveAndShowVotersOpinion']) {
+        foreach ($voters as $v) {
+            list($vot, $erg) = explode('_', $v);
+            if ($vot == $voter) {
+                return true;
+            }
+        }
+        return false;
+    } else {
+        return in_array($voter, $voters);
+    }
+}
+//Stellt die Namen einer Otion zusammen
+function FE_getVotersOpinions($voters, $opinion)
+{
+    $output = array();
+    foreach ($voters as $tmp){
+        list($v, $vo) = explode('_', $tmp);
+        if ($opinion == $vo) {
+            $output[] = get_n($v);
+        }
+    }
+    return implode(', ', $output);
+}
 
 ?>

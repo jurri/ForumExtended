@@ -31,7 +31,7 @@ if (isset($_POST['dyes'])) {
 		$max = db_result($erg,0);
 		db_query("UPDATE `prefix_topics` SET last_post_id = ".$max.", `rep` = `rep` - 1 WHERE id = ".$tid );
 		db_query("UPDATE `prefix_forums` SET last_post_id = ".$max.", posts = posts - 1 WHERE id = ".$fid );
-
+		FE_CreateVote($menu->get(3), '');
     $tpl = new tpl ( 'forum/del_post' );
     $tpl->set_out('tid',$tid,1);
 }else{

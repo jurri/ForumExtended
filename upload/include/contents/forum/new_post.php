@@ -65,7 +65,7 @@ if((($_SESSION['klicktime'] + 15) > $dppk_time OR empty($txt) OR !empty($_POST['
 	}
 
 	if(isset($_POST['priview'])){
-		$tpl->set_out('txt', bbcode(unescape($txt)), 0);
+		$tpl->set_out('txt', FE_Vote2HTML(1, bbcode(unescape($txt)), true), 0);
 	}
 	if(empty($txt)){
 		$txt = $xtext;
@@ -83,9 +83,10 @@ if((($_SESSION['klicktime'] + 15) > $dppk_time OR empty($txt) OR !empty($_POST['
 
 	$tpl->set_ar_out($ar,1);
 
-	$erg = db_query('SELECT erst, txt FROM `prefix_posts` WHERE tid = "'.$tid.'" ORDER BY time DESC LIMIT 0,5');
+	$erg = db_query('SELECT id, erst, txt FROM `prefix_posts` WHERE tid = "'.$tid.'" ORDER BY time DESC LIMIT 0,5');
 	while($row = db_fetch_assoc($erg)){
 		$row['txt'] = bbcode($row['txt']);
+		$row['txt'] = FE_Vote2HTML($row['id'],$row['txt'],TRUE);
 		$tpl->set_ar_out($row, 2);
 	}
 	$tpl->out(3);
@@ -137,7 +138,7 @@ if((($_SESSION['klicktime'] + 15) > $dppk_time OR empty($txt) OR !empty($_POST['
 
 	db_query("UPDATE `prefix_topics` SET last_post_id = ".$pid.", rep = rep + 1 WHERE id = ".$tid);
 	db_query("UPDATE `prefix_forums` SET posts = posts + 1, last_post_id = ".$pid." WHERE id = ".$fid );
-
+	FE_CreateVote($pid, $txt);
 	$page = ceil(($aktTopicRow['rep']+1) / $allgAr['Fpanz']);
 
   # toipc als gelesen markieren

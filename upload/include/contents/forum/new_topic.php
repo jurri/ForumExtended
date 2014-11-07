@@ -45,7 +45,8 @@ if (($_SESSION['klicktime'] + 15) > $dppk_time OR empty($topic) OR empty($txt) O
   }
 
   if (isset($_POST['priview'])) {
-    $tpl->set_out('txt', bbcode(unescape($txt)), 0);
+    //$tpl->set_out('txt', bbcode(unescape($txt)), 0);
+	$tpl->set_out('txt', FE_Vote2HTML(1, bbcode(unescape($txt)), true), 0);
   }
 
   $ar = array (
@@ -90,7 +91,7 @@ if (($_SESSION['klicktime'] + 15) > $dppk_time OR empty($topic) OR empty($txt) O
 
   db_query("UPDATE `prefix_topics` SET last_post_id = ".$pid." WHERE id = ".$tid);
   db_query("UPDATE `prefix_forums` SET posts = posts + 1, last_post_id = ".$pid.", topics = topics + 1 WHERE id = ".$fid);
-
+	FE_CreateVote($pid, $txt);
   # toipc als gelesen markieren
   $_SESSION['forumSEE'][$fid][$tid] = time();
 

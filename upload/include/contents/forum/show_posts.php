@@ -89,7 +89,7 @@ $month_current = $monatsnamen [gmdate('n')];
 
                 $posts = $row['posts'];
                 $row['posts']  = '<font style="font-weight:bold">Beiträge:</font> '.$row['posts'].'<br />';
-
+				
                 if ( $posts == '' ) { $row['posts'] = '<br>Nicht registriert';}
 
 #Ranking Balken
@@ -222,6 +222,7 @@ $month_current = $monatsnamen [gmdate('n')];
 				$row['danke'] .= '<a href="index.php?user-details-'.$thx_row['bedankerid'].'"><img src="http://www.kizuna-la.org/wp-content/uploads/2013/11/Special-Thanks-Donors-Icon.jpg" width="16" height="16"/>'.$thx_row['bedankername'].'</a> ';
 			}
 		} 
+		$row['txt'] = FE_Vote2HTML($row['id'], $row['txt']);
         $tpl->set_ar_out($row,1);
   
   $i++;

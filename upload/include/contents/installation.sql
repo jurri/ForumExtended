@@ -23,3 +23,10 @@ CREATE TABLE `prefix_forumrecht` (
 
 ALTER TABLE `prefix_forums`
 ADD COLUMN `erwrecht` tinyint(1) NOT NULL AFTER `besch`;
+
+CREATE TABLE IF NOT EXISTS prefix_posts_poll (
+	`post_id` MEDIUMINT( 9 ) NOT NULL ,
+	`voters` TEXT NOT NULL ,
+	`results` TEXT NOT NULL,
+	PRIMARY KEY (`post_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='Umfrage by Mairu';
