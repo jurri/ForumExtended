@@ -24,7 +24,7 @@ $q = "SELECT
   a.id, a.cid, a.name, a.besch,
   a.topics, a.posts, b.name as topic,
   c.id as pid, c.tid, b.rep, c.erst, c.time,
-  a.cid, k.name as cname
+  a.cid, k.name as cname, a.erwrecht
 FROM prefix_forums a
   LEFT JOIN prefix_forumcats k ON k.id = a.cid
   LEFT JOIN prefix_posts c ON a.last_post_id = c.id
@@ -41,8 +41,10 @@ WHERE ((".$_SESSION['authright']." <= a.view AND a.view < 1)
 	 OR sg.fid IS NOT NULL
 	 OR -9 = ".$_SESSION['authright'].")
 	 AND k.cid = 0
+	 AND a.erwrecht = 0
 ORDER BY k.pos, a.pos";
 $erg1 = db_query($q);
+
 $xcid = 0;
 $x = 0;
 $y=0;
@@ -130,19 +132,57 @@ echo '<table width="100%" cellpadding="4" cellspacing="1" border="0">
 
 echo '<div id="container">
 	<dl>';
+$katid = 0;
 while ($r = db_fetch_assoc($erg1) ) {
-	$zahl = db_fetch_assoc(db_query("SELECT count(*) anzahl FROM prefix_forums WHERE cid = ".$r['cid']." AND view >= ".$_SESSION['authright']));
-  $x++;
-  $y++;
-  $r['topicl'] = $r['topic'];
-  $r['topic']  = html_enc_substr($r['topic'],0,30);
-  $r['ORD']    = forum_get_ordner($r['time'],$r['id']);
-  $r['mods']   = getmods($r['id']);
-  $r['datum']  = date('d.m.y - H:i', $r['time']);
-  $r['page']   = ceil ( ($r['rep']+1)  / $allgAr['Fpanz'] );
-  $r['erst'] = forum_farbname($r['erst']);
-  //$tpl->set_ar ($r);
+
+	$x++;
+	$y++;
+	
+    $r['topicl'] = $r['topic'];
+	$r['topic']  = html_enc_substr($r['topic'],0,30);
+	$r['ORD']    = forum_get_ordner($r['time'], $r['id']);
+	$r['mods']   = getmods($r['id']);
+	$r['datum']  = date('d.m.y - H:i', $r['time']);
+	$r['page']   = ceil ( ($r['rep']+1)  / $allgAr['Fpanz'] );
+	$r['erst'] = forum_farbname($r['erst']);
+	//$tpl->set_ar ($r);
 	$arr[$x] = $r['cname'];
+
+	$zahl = db_fetch_assoc(db_query("SELECT count(*) anzahl FROM prefix_forums WHERE cid = ".$r['cid']." AND view >= ".$_SESSION['authright']." AND erwrecht = 0"));
+	
+	$erg_recht = db_query(
+		"SELECT * 
+		   FROM ic1_forumrecht,
+			    ic1_groupusers g,
+			    ic1_forums f 
+		  WHERE recht_bearbeiten = 1 
+		    and g.uid = 1
+		    and g.gid = recht_fkrecht
+		    and f.cid = ".$r['cid']."
+			and recht_fkforum = f.id"
+	);
+	if(db_num_rows($erg_recht) > 0){
+		$erwr_forum = '';
+		while($rowerw = db_fetch_assoc($erg_recht)){
+			if($katid != $rowerw['cid']){
+				$katid = $rowerw['cid'];
+				$rowerw['ORD'] = forum_get_ordner($rowerw['time'], $rowerw['id']);
+				$erwr_forum = '
+					<tr class="Cnorm" cellspacing="1">
+						<td width="5%" align="center" valign="middle" class="Cdark"><img alt="" src="include/images/forum/'.$rowerw['ORD'].'.png" border="0"></td>
+						<td width="53%" class="Cnorm"><a href="index.php?forum-showtopics-'.$rowerw['id'].'">'.$rowerw['name'].'</a><br /><span class="smalfont">'.$rowerw['besch'].'</span></td>   
+						<td align="center" class="Cdark" width="6%"><img src="include/images/forum/beitrag.png" border="0" /><span class="smalfont">'.$rowerw['posts'].'</span></td>
+						<td align="center" class="Cdark" width="6%"><img src="include/images/forum/themen.png" border="0" /><span class="smalfont">'.$rowerw['topics'].'</span></td>
+						<td class="Cnorm" width="25%"><img src="include/images/forum/post.png" border="0" width="14" height="14"> <a class="smalfont" title="'.$rowerw['topicl'].'" href="index.php?forum-showposts-'.$rowerw['tip'].'-p'.$rowerw['page'].'#'.$rowerw['pid'].'">'.$rowerw['topics'].'</a>
+							<br /><span class="smalfont">von: '.$rowerw['erst'].'</span></td>
+					</tr>';
+			}
+		}
+	}else{
+		$erwr_forum = '';
+	}
+	
+  
 	if($arr[$x] == $arr[$x-1]){
 		$r['tab'] = "";
 	}else{
@@ -151,6 +191,8 @@ while ($r = db_fetch_assoc($erg1) ) {
 	</tr>';
 	$r['tab'] = '<dt>'.$r['cname'].'<a href="index.php?forum-showcat-'.$r['cid'].'" id="button" class="closed">Details</a></dt><dd><table width="98%" cellpadding="4" cellspacing="1" border="0">';
 	}
+	
+	$r['tab'] .= $erwr_forum;
 	
 	$r['tab'] .= '<tr class="Cnorm" cellspacing="1">
 		<td width="5%" align="center" valign="middle" class="Cdark"><img alt="" src="include/images/forum/'.$r['ORD'].'.png" border="0"></td>
@@ -166,7 +208,7 @@ while ($r = db_fetch_assoc($erg1) ) {
 	if($y == $zahl['anzahl']){
 		$y=0;
 		$r['tab'] .= '</table></dd>';
-		
+		//$katid = 0;
 	}
 
   /*if ($r['cid'] <> $xcid) {

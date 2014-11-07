@@ -1,6 +1,6 @@
 
 
-Ilchbb Forenmod 1.5 beta für das IlchClan CMS:
+Ilchbb Forenmod 1.6 für das IlchClan CMS:
 """""""""""""""""""""""""""""
 
 Beschreibung:
@@ -13,6 +13,7 @@ wie ein normales BB-Forum aussehen.
 - Bedanken für eine Post möglich
 - Bugfix bei der Moderation der Foren
 - Foren werden der Übersichtlichkeit zusammengeklapt.
+- Erweiterte Rechtevergabe im Adminbereich. (man kann gezielt nur einer Gruppe das Recht geben das Forum zu sehen oder mehreren verschiedenen.)
 
 
 
