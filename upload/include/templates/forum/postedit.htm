@@ -17,9 +17,44 @@
     document.form.submit.value = '{_lang_send}...';
     return true;
 	}
+
+function switch_html(switchinput){
+    var div = document.getElementById('txtdiv');
+    var txtarea = document.getElementById('txt');
+	
+	if(switchinput == '2'){
+		var txtarea = document.getElementById('txt');
+		var oldtxt = txtarea.value;
+        document.getElementById('bbcode_buttons').style.display = 'none';
+		
+		var objCKE = CKEDITOR.replace( 'txt', {
+			baseHref: 'include/includes/ckeditor/',
+			height : 400
+		}) ;
+
+        if (switch_html.arguments[0] == '2') {
+            document.forms["form"].html[1].checked = true;
+			objCKE.setData( document.getElementById('vorschau_td').innerHTML );
+        } else {
+            objCKE.setData( oldtxt );
+        }	
+		div.innerHTML = "<textarea class='ckeditor' id='txt' name='txt' cols='100' rows='10'>"+oldtxt+"</textarea>";
+	}
+	
+	if(switchinput == '1'){
+		var objCKE = CKEDITOR.instances['txt'];
+        var oldtxt = objCKE.getData();
+        CKEDITOR.remove(objCKE);
+
+		var oldtxt = txtarea.value;
+        document.getElementById('bbcode_buttons').style.display = 'block';
+		div.innerHTML = "<textarea id='txt' name='txt' cols='100' rows='10'>"+oldtxt+"</textarea>";
+	}
+}
 //-->
 </script>
-
+<script src='include/includes/ckeditor/ckeditor.js'></script>
+<link rel='stylesheet' href='include/includes/ckeditor/skins/moono/editor.css'>
 <form action="index.php?forum-editpost-{tid}-{oid}" method="POST" name="form" onSubmit="return form_check()">
 <script type="text/javascript" src="include/includes/js/bbcode.js"></script>
 
@@ -30,18 +65,19 @@
 		</th>
 	</tr><tr>
 	  <td colspan="2" height="20" class="Cmite">
-		  <b>{_lang_edityoutpost}</td>
+		  <b>{_lang_edityoutpost}</b>
+		  <input type="radio" name="html" value="0" onchange="switch_html(1);" {sel0} /><label for="html">BBCode</label><input type="radio" name="html" value="1" onchange="switch_html(2);" {sel1} /><label for="html">HTML (CKEditor)</label>
 		</td>
 	</tr><tr>
 	  <td class="Cmite" valign="top" rowspan="2">{SMILIES}</td>
 	  <td class="Cnorm">
-      <!-- BB Code START -->
-	  {__BBCodeButtons__}
-		 <!-- BB Code ENDE -->
+      <div style="display:block;" id="bbcode_buttons">
+      <!-- BB Code START -->{__BBCodeButtons__}<!-- BB Code ENDE -->
+		</div>
 		</td>
 	</tr><tr>
     <td width="80%" class="Cnorm"> 
-		  <textarea style="width: 98%" name="txt" rows="15" cols="50" tabindex="2">{txt}</textarea>
+		 <div id="txtdiv"><textarea style="width: 98%" class='' name="txt" id="txt" rows="15" cols="55" tabindex="2">{txt}</textarea></div>
     </td>
   </tr><tr class="Cmite">
     <td></td>

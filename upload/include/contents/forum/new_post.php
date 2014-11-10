@@ -78,7 +78,9 @@ if((($_SESSION['klicktime'] + 15) > $dppk_time OR empty($txt) OR !empty($_POST['
 		'tid'    => $tid,
 		'name'   => $name,
 		'SMILIES'  => getsmilies(),
-		'antispam'=> get_antispam('newpost',1)
+		'antispam'=> get_antispam('newpost',1),
+		'sel0'=> 'checked',
+		'sel1'=> ''
 	);
 
 	$tpl->set_ar_out($ar,1);

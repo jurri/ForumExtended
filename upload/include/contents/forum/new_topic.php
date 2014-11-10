@@ -55,7 +55,9 @@ if (($_SESSION['klicktime'] + 15) > $dppk_time OR empty($topic) OR empty($txt) O
     'topic'   => escape_for_fields(unescape($topic)),
 	'fid'     => $fid,
 	'SMILIES' => getsmilies(),
-	'antispam'=> get_antispam('newtopic',1)
+	'antispam'=> get_antispam('newtopic',1),
+		'sel0'=> 'checked',
+		'sel1'=> ''
   );
   $tpl->set_ar_out($ar,1);
 

@@ -57,7 +57,9 @@ if ($_SESSION['klicktime'] > ($dppk_time - 15) OR empty($txt) OR !empty($_POST['
     'tid' => $tid,
     'oid' => $oid,
     'txt' => (isset($_POST['priview']) ? escape_for_fields(unescape($txt)) : escape_for_fields($txt)),
-    'SMILIES' => getsmilies()
+    'SMILIES' => getsmilies(),
+		'sel0'=> 'checked',
+		'sel1'=> ''
   );
   $tpl->set_ar_out($ar,1);
   $erg = db_query('SELECT id, erst, txt FROM `prefix_posts` WHERE tid = "'.$tid.'" ORDER BY time DESC LIMIT 0,5');

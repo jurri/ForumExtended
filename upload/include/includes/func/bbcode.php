@@ -25,8 +25,8 @@ function getBBCodeButtons(){
 		$cfgBBCsql = db_query("SELECT * FROM prefix_bbcode_config WHERE fnConfigNr='1'");
 		$cfgInfo = db_fetch_assoc($cfgBBCsql);
 
-        $BBCodeButtons = '<script type="text/javascript" src="include/includes/js/interface.js"></script>';
-
+		$BBCodeButtons = '<script type="text/javascript" src="include/includes/js/interface.js"></script>';
+		
 		//> Fett Button!
 		if($boolButton['fnFormatB'] == 1) {
 			$BBCodeButtons .= "<a href=\"javascript:bbcode_insert('b','Gib hier den Text an der fett formatiert werden soll.')\"><img src=\"include/images/icons/bbcode/bbcode_bold.png\" alt=\"Fett formatieren\" title=\"Fett formatieren\" width=\"23\" height=\"22\" border=\"0\"></a> ";
@@ -66,9 +66,14 @@ function getBBCodeButtons(){
 		if($boolButton['fnFormatRight'] == 1) {
 			$BBCodeButtons .= "<a href=\"javascript:bbcode_code_insert('right','0')\"><img src=\"include/images/icons/bbcode/bbcode_right.png\" alt=\"Rechts ausrichten\" title=\"Rechts ausrichten\" width=\"23\" height=\"22\" border=\"0\"></a> ";
 		}
+		
+		//> Block Button!
+		if($boolButton['fnFormatBlock'] == 1) {
+			$BBCodeButtons .= "<a href=\"javascript:bbcode_code_insert('block','0')\"><img src=\"include/images/icons/bbcode/bbcode_block.png\" alt=\"Blocksatz ausrichten\" title=\"Blocksatz ausrichten\" width=\"23\" height=\"22\" border=\"0\"></a> ";
+		}
 
 		//> Leerzeichen?
-		if($boolButton['fnFormatLeft'] == 1 || $boolButton['fnFormatCenter'] == 1 || $boolButton['fnFormatRight'] == 1) {
+		if($boolButton['fnFormatLeft'] == 1 || $boolButton['fnFormatCenter'] == 1 || $boolButton['fnFormatRight'] == 1 || $boolButton['fnFormatBlock'] == 1) {
 			$BBCodeButtons .= "&nbsp;";
 		}
 
@@ -84,14 +89,18 @@ function getBBCodeButtons(){
 
 		//> Schriftfarbe Button!
         if($boolButton['fnFormatColor'] == 1) {
-          $colorar = array('#FF0000' => 'red','#FFFF00' => 'yellow','#008000' => 'green','#00FF00' => 'lime','#008080' => 'teal','#808000' => 'olive','#0000FF' => 'blue','#00FFFF' => 'aqua', '#000080' => 'navy','#800080' => 'purple','#FF00FF' => 'fuchsia','#800000' => 'maroon','#C0C0C0' => 'grey','#808080' => 'silver','#000000' => 'black','#FFFFFF' => 'white',);
-          $BBCodeButtons .= "<a href=\"javascript:hide_color();\"><img id=\"bbcode_color_button\" src=\"include/images/icons/bbcode/bbcode_color.png\" alt=\"Text f&auml;rben\" title=\"Text f&auml;rben\" width=\"23\" height=\"22\" border=\"0\"></a> ";
-          $BBCodeButtons .= '<div style="display:none; position:absolute; top:0px; left:0px; width:200px; z-index:100;" id="colorinput">
-          <table width="100%" class="border" border="0" cellspacing="1" cellpadding="0">
-            <tr class="Chead" onclick="javascript:hide_color();"><td colspan="16"><b>Farbe wählen</b></td></tr>
-            <tr class="Cmite" height="15">'.colorliste($colorar).'</tr></table>
-          </div>';
         }
+		
+		//> Schriftfarbeauswahlcontainer
+		if($boolButton['fnFormatColor'] == 1) {
+			$BBCodeButtons .= "<a href=\"javascript:hide_color();\"><img id=\"bbcode_color_button\" src=\"include/images/icons/bbcode/bbcode_color.png\" alt=\"Text f&auml;rben\" title=\"Text f&auml;rben\" width=\"23\" height=\"22\" border=\"0\"></a> ";
+			$colorar = array('#FF0000' => 'red','#FFFF00' => 'yellow','#008000' => 'green','#00FF00' => 'lime','#008080' => 'teal','#808000' => 'olive','#0000FF' => 'blue','#00FFFF' => 'aqua', '#000080' => 'navy','#800080' => 'purple','#FF00FF' => 'fuchsia','#800000' => 'maroon','#C0C0C0' => 'grey','#808080' => 'silver','#000000' => 'black','#FFFFFF' => 'white',);
+			$BBCodeButtons .= '<div style="position:absolute;"><div style="display:none; position:relative; top:-30px; left:100px; width:200px; z-index:100;" id="colorinput">
+			<table width="100%" class="border" border="0" cellspacing="1" cellpadding="0">
+				<tr class="Chead" onclick="javascript:hide_color();"><td colspan="16"><b>Farbe wählen</b></td></tr>
+				<tr class="Cmite" height="15">'.colorliste($colorar).'</tr></table>
+			</div></div>';
+		}
 
 		//> Schriftgröße Button!
 		if($boolButton['fnFormatSize'] == 1) {
@@ -122,6 +131,12 @@ function getBBCodeButtons(){
 		if($boolButton['fnFormatImg'] == 1) {
 			$BBCodeButtons .= "<a href=\"javascript:bbcode_insert('img','Gib hier die Adresse des Bildes an.\\nHinweise: Die Breite und H&ouml;he des Bildes ist auf ".$cfgInfo['fnImgMaxBreite']."x".$cfgInfo['fnImgMaxHoehe']." eingeschr&auml;nkt und w&uuml;rde verkleinert dargstellt werden.\\nEs ist möglich ein Bild rechts oder links von anderen Elementen darzustellen, indem man [img=left] oder [img=right] benutzt.')\"><img src=\"include/images/icons/bbcode/bbcode_image.png\" alt=\"Bild einf&uuml;gen\" title=\"Bild einf&uuml;gen\" width=\"23\" height=\"22\" border=\"0\"></a> ";
 		}
+		
+		//> Bild hochladen!
+		global $allgAr;
+		if($allgAr['forum_usergallery'] == 1 && loggedin() && $boolButton['fnFormatImgUpl'] == 1 ) {
+			$BBCodeButtons .= "<a href=\"javascript:usergalleryupl();\" title=\"Bild in Usergallery hochladen und einf&uuml;gen\"><img src=\"include/images/icons/bbcode/bbcode_imageupl.png\" alt=\"Bild hochladen\" width=\"23\" height=\"22\" border=\"0\" /></a> ";
+		}
 
 		//> Screenshot Button!
 		if($boolButton['fnFormatScreen'] == 1) {
@@ -148,6 +163,11 @@ function getBBCodeButtons(){
 			$BBCodeButtons .= "<a href=\"javascript:bbcode_insert_with_value_2('video','Gib hier die Video ID vom Anbieter an.','Bitte Anbieter ausw&auml;hlen.\\nAkzeptiert werden: Google, YouTube, MyVideo und GameTrailers')\"><img src=\"include/images/icons/bbcode/bbcode_video.png\" alt=\"Video einf&uuml;gen\" title=\"Video einf&uuml;gen\" width=\"23\" height=\"22\" border=\"0\"></a> ";
 		}
 
+		//> Umfragebutton
+		if($GLOBALS['menu']->get(0) == 'forum') {
+			$BBCodeButtons .= "<a href=\"javascript:insertvote()\"><img src=\"include/images/icons/bbcode/bbcode_vote.png\" alt=\"Umfrage einf&uuml;gen\" title=\"Umfrage einf&uuml;gen\" width=\"23\" height=\"22\" border=\"0\"></a> ";
+		}
+		
 		//> Flash Button!
 		if($boolButton['fnFormatFlash'] == 1) {
 			$BBCodeButtons .= "<a href=\"javascript:bbcode_insert_with_multiple_values('flash',{tag:['Gib hier den Link zur Flashdatei an',''],width:['Gib hier die Breite für die Flashdatei an','400'],height:['Gib hier die Höhe für die Flashdatei an','300']})\"><img src=\"include/images/icons/bbcode/bbcode_flash.png\" alt=\"Flash einf&uuml;gen\" title=\"Flash einf&uuml;gen\" width=\"23\" height=\"22\" border=\"0\"></a> ";
@@ -156,11 +176,6 @@ function getBBCodeButtons(){
 		//> Countdown Button!
 		if($boolButton['fnFormatCountdown'] == 1) {
 			$BBCodeButtons .= "<a href=\"javascript:bbcode_insert_with_value('countdown','Gib hier das Datum an wann das Ereignis beginnt.\\n Format: TT.MM.JJJJ Bsp: 24.12.".date("Y")."','Gib hier eine Zeit an, wann das Ergeinis am Ereignis- Tag beginnt.\\nFormat: Std:Min:Sek Bsp: 20:15:00')\"><img src=\"include/images/icons/bbcode/bbcode_countdown.png\" alt=\"Countdown festlegen\" title=\"Countdown festlegen\" width=\"23\" height=\"22\" border=\"0\"></a> ";
-		}
-
-		//> Umfragebutton
-		if($GLOBALS['menu']->get(0) == 'forum') {
-			$BBCodeButtons .= " <a href=\"javascript:insertvote()\"><img src=\"include/images/icons/bbcode/bbcode_vote.png\" alt=\"Umfrage einf&uuml;gen\" title=\"Umfrage einf&uuml;gen\" width=\"23\" height=\"22\" border=\"0\"></a>";
 		}
 
 		//> Leerzeichen?

@@ -657,7 +657,7 @@ class bbcode {
         //> BB Code der den Codeblock nicht betrifft.
         //> Überprüfen ob die wörter nicht die maximal länge überschrieten.
         $string = $this->_shortwords($string);
-		$string = htmlentities($string, ILCH_ENTITIES_FLAGS, ILCH_CHARSET);
+		//$string = htmlentities($string, ILCH_ENTITIES_FLAGS, ILCH_CHARSET);
         $string = nl2br($string);
 
         if($this->permitted['url'] == true) {
@@ -700,7 +700,9 @@ class bbcode {
         //> Darf BB Code [B] dekodiert werden?
         if($this->permitted['b'] == true) {
             //> Format: [b]xxx[/b]
-            $this->pattern[] = "%\[b\](.+)\[\/b\]%Uis";
+            //$this->pattern[] = "%\[b\](.+)\[\/b\]%Uis";
+			//--  
+			$this->pattern[] = "/\[b\](.*)\[\/b\]/Usi";
             $this->replace[] = "<b>\$1</b>";
         }
 
