@@ -310,23 +310,3 @@ function bbcode_code_insert_codes(tag) {
 		bbcode_code_insert(tag,'1');
 	}
 }
-
-//Funktion zum Einfügen des Umfragecodes
-function insertvote(){
-  var x = '';
-  var l = '';
-  var i = 0;
-  
-  var q = prompt("Hier die Umfragebeschreibung eingeben:");
-  while ( x != null ) {
-    x = prompt ("Hier die Optionen der Umfrage einzeln eintragen, jede mit OK bestätigen!\nUm die Aufnahme von Optionen zu beenden 'Abbrechen' drücken");
-    i++;
-    if ( x != null ) {
-      l = l + "[option=" + i + "]" + x + "\n";
-    }
-  }
-if ( (( q != '' ) && ( l != '')) && (i >= 2) ) {
-    l = "[vote]\n" + '[question]' + q + '[/question]\n' + l + "[/vote]"; 
-    simple_insert ( l, '' );
-  }
-}
