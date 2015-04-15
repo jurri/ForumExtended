@@ -30,10 +30,11 @@ ADD COLUMN `erwrecht` tinyint(1) NOT NULL AFTER `besch`;
 -- Tabellenstruktur für die Votefunktion im Forum
 --
 CREATE TABLE IF NOT EXISTS prefix_posts_poll (
-	`post_id` MEDIUMINT( 9 ) NOT NULL ,
+	`post_id` MEDIUMINT( 9 ) DEFAULT 0 NOT NULL ,
 	`voters` TEXT NOT NULL ,
 	`results` TEXT NOT NULL,
-	PRIMARY KEY (`post_id`)
+	`pp_pk` mediumint(11) DEFAULT null not null AUTO_INCREMENT,
+	PRIMARY KEY (`pp_pk`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='Umfrage by Mairu';
 
 -----------------------------------------------------------------------------------------
